@@ -164,7 +164,7 @@ Let's build some distributables with this:
   **Command Line:** `python /tmp/tmp.1235/life/game_of_life.py ...`<br>
   Now when we execute it doesn't fail right away, but we still need the images.
 
-- `pydist.sh working-2.sh --add ~/pydist/demo images resources *.png working-3.sh`<br>
+- `pydist.sh working-2.sh --add ~/pydist/demo images resources/ *.png working-3.sh`<br>
   Add the `.png` files to the `resources/` folder in the payload.<br>
   **Payload Structure:**
   ```
@@ -223,7 +223,7 @@ Of course, all of these commands could be done in a single shot:
 ```bash
 pydist.sh \
   --code ~/pydist/demo/life . \
-  --add ~/pydist/demo images *.png \
+  --add ~/pydist/demo images resources/ *.png \
   --remove images/spiders \
   --option main life/game_of_life.py \
   --option clean \
