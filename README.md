@@ -211,7 +211,7 @@ Let's build some distributables with this:
 
 - `pydist.sh working-4.sh --option clean life.sh`
   **Payload Structure:** Unchanged<br>
-  **Command Line:** `python /tmp/tmp.1236/ ...`<br>
+  **Command Line:** `python /tmp/tmp.1238/ ...`<br>
   Now we just clean all of the options we used out of the distributable and ship
   `life.sh`.
 
