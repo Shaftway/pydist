@@ -54,21 +54,22 @@ executed directly. Any arguments will be forwarded on to the Python script.
 Commands modify the files that get included in the distributable. They do this
 by adding or removing files from a "staging" folder.
 
-- `--add <root> <path> <pattern>`<br>
+- `--add <root> <path> <destination> <pattern>`<br>
   Adds all files found in `<root>/<path>` that match the filename pattern
-  `<pattern>`, relative to `<root>`. For example, if you use
-  `--add ~/code/sample animals/monkey/* *.py` all of the `.py` files in
-  `~/code/sample/animals/monkey/` will be added, but files that don't end in
-  `.py` or files that are in a sub-folder of monkey will not be added. These
-  files will be in the distributable in the `./animals/monkey/` folder.
+  `<pattern>`, relative to `<root>` in the `<destination>` folder of the
+  payload. For example, if you use
+  `--add ~/code/sample/animals monkey/* beasts/ *.py` all of the `.py` files
+  in `~/code/sample/animals/monkey/` will be added, but files that don't end
+  in `.py` or files that are in a sub-folder of monkey will not be added.
+  These files will be in the distributable in the `./beasts/monkey/` folder.
 
 - `--code <root> <path>`<br>
   Adds all `.py` files found in `<root>/<path>`, relative to `<root>`. This is
-  analagous to `--add <root> <path> *.py`.
+  analagous to `--add <root> <path> . *.py`.
 
 - `--data <root> <path>`<br>
   Adds all files found in `<root>/<path>`, relative to `<root>`. This is
-  analagous to `--add <root> <path> *`.
+  analagous to `--add <root> <path> . *`.
 
 - `--remove <path>`<br>
   Removes all files that match `<path>` from the distributable. This uses the
