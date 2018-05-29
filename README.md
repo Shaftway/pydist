@@ -157,7 +157,7 @@ Let's build some distributables with this:
   ```
 
 - `pydist.sh working-1.sh --option main life/game_of_life.py working-2.sh`<br>
-  **Payload Structure:** Unchanged<br>
+  **Payload Structure:** *Unchanged*<br>
   **Command Line:** `python /tmp/tmp.1235/life/game_of_life.py ...`<br>
   We've added the main script that should run. Now when we execute it doesn't
   fail right away, but we still need some images.
@@ -258,13 +258,17 @@ PAYLOAD:
 <compressed payload>
 ```
 
-When the script is executed a temp directory is created and the payload is
-uncompressed to it. The script then executes the uncompressed code using Python.
-After execution the temp directory is deleted. The options are not used at run
-time; they are only used when modifying an existing distributable.
+When the script is executed a temp directory is created and everything after
+"PAYLOAD:" is uncompressed to it. The script then executes the uncompressed code
+using Python. After execution the temp directory is deleted. The options are not
+used at run time; they are only used when modifying an existing distributable.
 
 When creating a distributable a temp directory is created. If an input file is
 specified, the payload is extracted and decompressed into that temp directory
 and the options are read out. Each command modifies the payload directory, and
 when the distributable is ready to be written that payload directory is
 compressed and injected into the script along with the options.
+
+# License
+
+This project is licensed under the terms of the [MIT license](LICENSE.md)."
