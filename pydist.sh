@@ -45,6 +45,25 @@ function remove {
   SHIFTS=2
 }
 
+function option {
+  log "  Option: $1";
+
+  if [[ "$1" == "python" ]]; then
+    log "    Using Python '$2'";
+    USE_PYTHON="$2";
+    SHIFTS=2;
+
+  elif [[ "$1" == "main" ]]; then
+    log "    Setting '$2' as entry point";
+    MAIN="$2";
+    SHIFTS=2;
+
+  else
+    echo -e "Unexpected option: '$1'";
+    fail;
+  fi
+}
+
 function debug {
   # Writes out debugging information.
   echo "Staging directory: $WORKING_DIR";
@@ -53,8 +72,10 @@ function debug {
 }
 
 function execute {
-  log "  Executing: python \"$WORKING_DIR\" $@"
-  python "$WORKING_DIR" "$@"
+  log "  Executing: $USE_PYTHON $WORKING_DIR/$MAIN $@"
+  log "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+  "$USE_PYTHON" "$WORKING_DIR/$MAIN" "$@"
+  log "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
   EXIT_STATUS=$?
 }
 
@@ -107,6 +128,8 @@ WORKING_DIR=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`;
 ASSUME_INPUT=true
 EXIT_STATUS=''
 VERBOSE=false
+USE_PYTHON=python
+MAIN=.
 
 # =======================================================
 # ==  Set up a hook to delete the working dir on exit  ==
@@ -164,6 +187,9 @@ while (( "$#" )); do
 
   elif [[ "$NEXT_COMMAND" == "--remove" ]]; then
     remove "$@";
+
+  elif [[ "$NEXT_COMMAND" == "--option" ]]; then
+    option "$@";
 
   # TODO: Handle more arguments here.
 
