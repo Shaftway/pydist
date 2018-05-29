@@ -139,6 +139,7 @@ For this example, let's assume we have the following directory structure:
 Let's build some distributables with this:
 
 - `pydist.sh --code ~/pydist/demo/life . working-1.sh`<br>
+  This creates our distributable, adding some of our code.<br>
   **Payload Structure:**
   ```
   ./
@@ -157,24 +158,27 @@ Let's build some distributables with this:
   ```
 
 - `pydist.sh working-1.sh --option main life/game_of_life.py working-2.sh`<br>
+  To fix the error in the first step, let's specify that `game_of_life.py` is
+  the main entry point.<br>
   **Payload Structure:** *Unchanged*<br>
   **Command Line:** `python /tmp/tmp.1235/life/game_of_life.py ...`<br>
-  We've added the main script that should run. Now when we execute it doesn't
-  fail right away, but we still need some images.
+  Now when we execute it doesn't fail right away, but we still need the images.
 
-- `pydist.sh working-2.sh --add ~/pydist/demo images *.png working-3.sh`<br>
+- `pydist.sh working-2.sh --add ~/pydist/demo images resources *.png working-3.sh`<br>
+  Add the `.png` files to the `resources/` folder in the payload.<br>
   **Payload Structure:**
   ```
   ./
   ├── game_of_life.py
-  ├── images/
-  │   ├── mammals/
-  │   │   ├── anteater.png
-  │   │   └── primates/
-  │   │       └── monkey.png
-  │   └── spiders/
-  │       └── tarantulas/
-  │           └── big_scary_spider.png
+  ├── resources/
+  │   └── images/
+  │       ├── mammals/
+  │       │   ├── anteater.png
+  │       │   └── primates/
+  │       │       └── monkey.png
+  │       └── spiders/
+  │           └── tarantulas/
+  │               └── big_scary_spider.png
   └── mammals/
       ├── __init__.py
       ├── anteater.py
@@ -187,18 +191,17 @@ Let's build some distributables with this:
   `big_scary_spider.png`.
 
 - `pydist.sh working-3.sh --remove images/spiders/ working-4.sh`<br>
+  Remove all of the spider images, just to be sure.<br>
   **Payload Structure:**
   ```
   ./
   ├── game_of_life.py
-  ├── images/
-  │   ├── mammals/
-  │   │   ├── anteater.png
-  │   │   └── primates/
-  │   │       └── monkey.png
-  │   └── spiders/
-  │       └── tarantulas/
-  │           └── big_scary_spider.png
+  ├── resources/
+  │   └── images/
+  │       └── mammals/
+  │           ├── anteater.png
+  │           └── primates/
+  │               └── monkey.png
   └── mammals/
       ├── __init__.py
       ├── anteater.py
@@ -210,10 +213,10 @@ Let's build some distributables with this:
   That's better, no big scary spider pictures. Time to test `life.sh`.
 
 - `pydist.sh working-4.sh --option clean life.sh`
+  Clean up the distributable and write it to the final output file.<br>
   **Payload Structure:** Unchanged<br>
   **Command Line:** `python /tmp/tmp.1238/ ...`<br>
-  Now we just clean all of the options we used out of the distributable and ship
-  `life.sh`.
+  Now we just need to ship `life.sh`...
 
 Of course, all of these commands could be done in a single shot:
 
