@@ -38,10 +38,23 @@ function data {
   SHIFTS=3
 }
 
+function remove {
+  # Removes staged files. Args: <path> <pattern>
+  log "  Removing files: $1 / $2";
+  find "$WORKING_DIR/$1" -name "$2" -exec rm -rf \{\} \; 2> /dev/null
+  SHIFTS=2
+}
+
 function debug {
   # Writes out debugging information.
   echo "Staging directory: $WORKING_DIR";
   find "$WORKING_DIR";
+  EXIT_STATUS=0
+}
+
+function extract {
+  log "Extracting files to $1";
+  cp -R "$WORKING_DIR" "$1";
   EXIT_STATUS=0
 }
 
@@ -93,10 +106,13 @@ VERBOSE=false
 # ==  Set up a hook to delete the working dir on exit  ==
 # =======================================================
 
+if [ -z "${WORKING_DIR}" ]; then
+  echo -e "Staging directory couldn't be created.";
+  exit 1;
+fi
+
 function cleanup {
-  if [ -n "${WORKING_DIR}" ]; then
-    rm -rf "${WORKING_DIR}";
-  fi;
+  rm -rf "${WORKING_DIR}";
 }
 
 trap cleanup EXIT;
@@ -133,6 +149,12 @@ while (( "$#" )); do
 
   elif [[ "$NEXT_COMMAND" == "--data" ]]; then
     data "$@";
+
+  elif [[ "$NEXT_COMMAND" == "--extract" ]]; then
+    extract "$@";
+
+  elif [[ "$NEXT_COMMAND" == "--remove" ]]; then
+    remove "$@";
 
   # TODO: Handle more arguments here.
 
