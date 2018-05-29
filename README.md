@@ -60,7 +60,7 @@ executed directly. Any arguments will be forwarded on to the Python script.
 Commands modify the files that get included in the distributable. They do this
 by adding or removing files from a "staging" folder.
 
-- `--add <root> <path> <destination> <pattern>`<br>
+- `--add <root> <path> <pattern> <destination>`<br>
   Adds all files found in `<root>/<path>` that match the filename pattern
   `<pattern>`, relative to `<root>` in the `<destination>` folder of the
   payload. For example, if you use
@@ -69,13 +69,13 @@ by adding or removing files from a "staging" folder.
   in `.py` or files that are in a sub-folder of monkey will not be added.
   These files will be in the distributable in the `./beasts/monkey/` folder.
 
-- `--code <root> <path>`<br>
+- `--code <root> <path> <destination>`<br>
   Adds all `.py` files found in `<root>/<path>`, relative to `<root>`. This is
-  analagous to `--add <root> <path> . *.py`.
+  analagous to `--add <root> <path> "*.py" <destination>`.
 
-- `--data <root> <path>`<br>
+- `--data <root> <path> <destination>`<br>
   Adds all files found in `<root>/<path>`, relative to `<root>`. This is
-  analagous to `--add <root> <path> . *`.
+  analagous to `--add <root> <path> "*" <destination>`.
 
 - `--remove <path>`<br>
   Removes all files that match `<path>` from the distributable. This uses the

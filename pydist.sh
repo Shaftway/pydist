@@ -15,6 +15,36 @@ function help {
   EXIT_STATUS=0
 }
 
+function add {
+  # Adds files. Args: <root> <path> <pattern> <destination>
+  log "  Adding files: $1 / $2 / $3 --> $4"
+  (
+    cd "$1"
+    mkdir -p "$WORKING_DIR/$4";
+    find "$2" -not -type d -name "$3" -exec cp --parents \{\} "$WORKING_DIR/$4" \;
+  )
+  SHIFTS=4
+}
+
+function code {
+  # Adds code. Args: <root> <path> <destination>
+  add "$1" "$2" "*.py" "$3"
+  SHIFTS=3
+}
+
+function data {
+  # Adds data files. Args: <root> <path> <destination>
+  add "$1" "$2" "*" "$3"
+  SHIFTS=3
+}
+
+function debug {
+  # Writes out debugging information.
+  echo "Staging directory: $WORKING_DIR";
+  find "$WORKING_DIR";
+  EXIT_STATUS=0
+}
+
 function read_input_file {
   # TODO: Read input file.
   log "  Reading from $1"
@@ -87,21 +117,34 @@ while (( "$#" )); do
   NEXT_COMMAND="$1"
   SHIFTS=0
   log "Command: $NEXT_COMMAND";
+  shift;
 
   if [[ "$NEXT_COMMAND" == "--help" ]]; then
     help;
 
+  elif [[ "$NEXT_COMMAND" == "--debug" ]]; then
+    debug;
+
+  elif [[ "$NEXT_COMMAND" == "--add" ]]; then
+    add "$@";
+
+  elif [[ "$NEXT_COMMAND" == "--code" ]]; then
+    code "$@";
+
+  elif [[ "$NEXT_COMMAND" == "--data" ]]; then
+    data "$@";
+
   # TODO: Handle more arguments here.
 
   elif [[ "$ASSUME_INPUT" == "true" ]]; then
-    read_input_file "$@";
+    read_input_file "$NEXT_COMMAND";
 
-  elif [[ "$#" -ge 2 ]]; then
-    echo -e "Unexpected argument: $2";
+  elif [[ "$#" -gt 0 ]]; then
+    echo -e "Unexpected argument: $1";
     fail;
 
   else
-    write_output_file "$@"
+    write_output_file "$NEXT_COMMAND"
   fi
 
   # Exit if EXIT_STATUS is not blank.
@@ -110,8 +153,8 @@ while (( "$#" )); do
     exit $EXIT_STATUS;
   fi
 
-  # Shift arguments that have been used (+1 for command).
-  for ((n=0; n<=SHIFTS; n++)); do shift; done
+  # Shift arguments that have been used.
+  for ((n=0; n<SHIFTS; n++)); do shift; done
 
   # After the first arg assume that an unrecognized argument is the output file.
   ASSUME_INPUT=false
