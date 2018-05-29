@@ -15,11 +15,6 @@ function help {
   EXIT_STATUS=0
 }
 
-function fail {
-  help;
-  EXIT_STATUS=1
-}
-
 function read_input_file {
   # TODO: Read input file.
   log "  Reading from $1"
@@ -38,7 +33,18 @@ function write_output {
   echo "echo \"Not implemented yet\";";
 }
 
+# ========================
+# ==  Helper functions  ==
+# ========================
+
+function fail {
+  # Writes out help text and exits with a code of "1".
+  help;
+  EXIT_STATUS=1
+}
+
 function log {
+  # If $VERBOSE is "true", writes arguments to stderr.
   if [[ "$VERBOSE" == "true" ]]; then
     echo -e "$@";
   fi
