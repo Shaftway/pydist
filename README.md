@@ -8,11 +8,17 @@ be executed directly.
 
 ```bash
 ./pydist.sh --help
-./pydist.sh [input file] [command or option]... [output file]
-./pydist.sh [input file] [command or option]... --execute [argument]...
-./pydist.sh [input file] [command or option]... --extract <path>
-./pydist.sh [input file] [command or option]... --debug
+./pydist.sh [--verbose] [input file] [command]... [output file]
+./pydist.sh [--verbose] [input file] [command]... --execute [argument]...
+./pydist.sh [--verbose] [input file] [command]... --extract <path>
+./pydist.sh [--verbose] [input file] [command]... --debug
 ```
+
+- `--help`<br>
+  Prints help text.
+
+- `--verbose`<br>
+  Write verbose logging out to stderr.
 
 - `[input file]`<br>
   The input file is optional. It takes an existing pydist script and uses it as
@@ -20,7 +26,7 @@ be executed directly.
   script. If this is not supplied a blank template is used with defaults for all
   of the options.
 
-- `[command or option]`<br>
+- `[command]`<br>
   Zero or more commands or options to alter the generated distributable. Each
   command or option may take arguments, see [Commands](#commands) and
   [Options](#options) for more details.
