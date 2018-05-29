@@ -52,8 +52,14 @@ function debug {
   EXIT_STATUS=0
 }
 
+function execute {
+  log "  Executing: python \"$WORKING_DIR\" $@"
+  python "$WORKING_DIR" "$@"
+  EXIT_STATUS=$?
+}
+
 function extract {
-  log "Extracting files to $1";
+  log "  Extracting files to $1";
   cp -R "$WORKING_DIR" "$1";
   EXIT_STATUS=0
 }
@@ -141,6 +147,12 @@ while (( "$#" )); do
   elif [[ "$NEXT_COMMAND" == "--debug" ]]; then
     debug;
 
+  elif [[ "$NEXT_COMMAND" == "--execute" ]]; then
+    execute "$@";
+
+  elif [[ "$NEXT_COMMAND" == "--extract" ]]; then
+    extract "$@";
+
   elif [[ "$NEXT_COMMAND" == "--add" ]]; then
     add "$@";
 
@@ -149,9 +161,6 @@ while (( "$#" )); do
 
   elif [[ "$NEXT_COMMAND" == "--data" ]]; then
     data "$@";
-
-  elif [[ "$NEXT_COMMAND" == "--extract" ]]; then
-    extract "$@";
 
   elif [[ "$NEXT_COMMAND" == "--remove" ]]; then
     remove "$@";
